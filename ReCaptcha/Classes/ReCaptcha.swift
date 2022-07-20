@@ -30,11 +30,15 @@ public class ReCaptcha {
         /// Alternate endpoint. Points to https://www.recaptcha.net/recaptcha/api.js
         case alternate
 
+        case explicit(apiKey: String)
+
         internal func getURL(locale: Locale?) -> String {
             let localeAppendix = locale.map { "&hl=\($0.identifier)" } ?? ""
             switch self {
             case .default:
                 return "https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" + localeAppendix
+            case .explicit(let apiKey):
+                return "https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=\(apiKey)" + localeAppendix
             case .alternate:
                 return "https://www.recaptcha.net/recaptcha/api.js?onload=onloadCallback&render=explicit"
                     + localeAppendix
@@ -129,6 +133,7 @@ public class ReCaptcha {
         apiKey: String? = nil,
         baseURL: URL? = nil,
         endpoint: Endpoint = .default,
+        action: String = "action",
         locale: Locale? = nil
     ) throws {
         let infoDict = Bundle.main.infoDictionary
@@ -142,7 +147,8 @@ public class ReCaptcha {
             html: config.html,
             apiKey: config.apiKey,
             baseURL: config.baseURL,
-            endpoint: endpoint.getURL(locale: locale)
+            endpoint: endpoint.getURL(locale: locale),
+            action: action
         ))
     }
 

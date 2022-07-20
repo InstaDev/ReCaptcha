@@ -100,13 +100,13 @@ internal class ReCaptchaWebViewManager {
          - baseURL: The URL configured with the API Key
          - endpoint: The JS API endpoint to be loaded onto the HTML file.
      */
-    init(html: String, apiKey: String, baseURL: URL, endpoint: String) {
+    init(html: String, apiKey: String, baseURL: URL, endpoint: String, action: String) {
         self.endpoint = endpoint
         self.decoder = ReCaptchaDecoder { [weak self] result in
             self?.handle(result: result)
         }
 
-        let formattedHTML = String(format: html, arguments: ["apiKey": apiKey, "endpoint": endpoint])
+        let formattedHTML = String(format: html, arguments: ["apiKey": apiKey, "endpoint": endpoint, "action": action])
 
         if let window = UIApplication.shared.keyWindow {
             setupWebview(on: window, html: formattedHTML, url: baseURL)

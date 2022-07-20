@@ -18,15 +18,10 @@ invisibility is not possible.
 
 #### _Warning_ ⚠️
 
-Beware that this library only works for ReCaptcha v2 Invisible keys! Make sure to check the reCAPTCHA
-v2 Invisible badge option when creating your [API Key](https://www.google.com/recaptcha/admin/create).
+Beware that this library only works for ReCaptcha v3 keys! 
 
-![ReCaptcha v2 invisible key example](https://raw.githubusercontent.com/fjcaetano/ReCaptcha/master/example-v2-key.png)
-
-You won't be able to use a ReCaptcha v3 key because it requires server-side validation. On v3, all
-challenges succeed into a token which is then validated in the server for a score. For this reason,
-a frontend app can't know on its own wether or not a user is valid since the challenge will always
-result in a valid token.
+ReCaptcha v3 key because it requires server-side validation. On v3, all
+challenges succeed into a token which is then validated in the server for a score.
 
 ## Installation
 
@@ -77,7 +72,9 @@ If instead you prefer to keep the information out of the Info.plist, you can use
 ``` swift
 let recaptcha = try? ReCaptcha(
     apiKey: "YOUR_RECAPTCHA_KEY", 
-    baseURL: URL(string: "YOUR_RECAPTCHA_DOMAIN")!
+    baseURL: URL(string: "YOUR_RECAPTCHA_DOMAIN",
+    endpoint: .explicit(apiKey: "YOUR_RECAPTCHA_KEY"), // Use explicit endpoint type here
+    action: "executeLogin")! // You can set action as needed on your backend
 )
 
 ...
